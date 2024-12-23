@@ -47,11 +47,11 @@ class BaseClient {
       case 200:
         var responseJson = jsonDecode(response.body);
         return responseJson;
-        break;
+
       case 201:
         var responseJson = jsonDecode(response.body);
         return responseJson;
-        break;
+
       case 400:
         throw BadRequestException(
             jsonDecode(response.body), response.request!.url.toString());
