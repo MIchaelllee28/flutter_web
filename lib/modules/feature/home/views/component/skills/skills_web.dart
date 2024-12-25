@@ -12,8 +12,8 @@ class SkillsWeb extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Adjust values based on screen width
-        final containerHeight = screenWidth > 1200 ? 250.0 : 200.0;
-        final fontSize = screenWidth * 0.020; // Dynamic font size
+        final containerHeight = screenWidth > 1200 ? 260.0 : 210.0;
+        final fontSize = screenWidth * 0.017; // Dynamic font size
         final leftPadding = screenWidth * 0.08; // 8% of screen width
         final rightPadding = screenWidth * 0.04; // 4% of screen width
         final rightPaddingSecond = screenWidth * 0.15; // 20% of screen width

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:getx_template/config/theme/main_color.dart';
 import 'package:getx_template/constants/items/navbar_item.dart';
+import 'package:getx_template/modules/feature/home/controllers/home_controller.dart';
 import 'package:getx_template/shared/styles/google_text_style.dart';
 
 class TopNavbar extends StatelessWidget {
@@ -9,6 +11,7 @@ class TopNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       color: MainColor.shadowColorLight,
       child: Container(
         margin: const EdgeInsets.all(10),
@@ -33,43 +36,62 @@ class TopNavbar extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   // Logo section
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(
-                      "MH",
-                      style: GoogleTextStyle.fw500.copyWith(
-                        color: MainColor.whitePrimary,
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        "MH",
+                        style: GoogleTextStyle.fw500.copyWith(
+                          color: MainColor.whitePrimary,
+                        ),
                       ),
                     ),
                   ),
 
                   // Navigation items
                   if (isSmallScreen)
-                    // Hamburger menu for small screens
                     IconButton(
                       icon: const Icon(Icons.menu, color: Colors.white),
                       onPressed: () {
-                        // Implement drawer or menu logic here
                         Scaffold.of(context).openEndDrawer();
                       },
                     )
                   else
-                    // Navigation items for larger screens
-                    Wrap(
-                      spacing: 15,
-                      children: navbarItem
-                          .map(
-                            (item) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: Text(
-                                item,
-                                style: GoogleTextStyle.fw300.copyWith(
-                                  color: MainColor.whitePrimary,
+                    SizedBox(
+                      height: 45,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: navbarItem.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 15, top: 10),
+                            child: MouseRegion(
+                              onEnter: (_) => HomeController.to
+                                  .updateHoverState(index, true),
+                              onExit: (_) => HomeController.to
+                                  .updateHoverState(index, false),
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () {
+                                  HomeController.to.scrollToItem(index);
+                                },
+                                child: Obx(
+                                  () => Text(
+                                    navbarItem[index],
+                                    style: GoogleTextStyle.fw300.copyWith(
+                                        color:
+                                            HomeController.to.isHovered(index)
+                                                ? MainColor.whitePrimary
+                                                : MainColor.whiteSecondary),
+                                  ),
                                 ),
                               ),
                             ),
-                          )
-                          .toList(),
+                          );
+                        },
+                      ),
                     ),
                 ],
               ),
